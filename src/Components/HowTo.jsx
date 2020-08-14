@@ -1,6 +1,4 @@
-import React, {Component} from 'react';
-import axios from 'axios';
-import { Alert } from 'reactstrap';
+import React from 'react';
 
 import Loading from './LoadingComponent';
 
@@ -34,27 +32,9 @@ class Home extends Component {
     }
 
     render(){
-        const { loading, err, errMessage } = this.state;
-
-        if(loading) return <Loading small/>
-
-        if(err){
-            return (
-                <Alert color="danger" style = {{paddingTop : 80}} >
-                    Something went wrong please Refresh the page
-                    <br/>
-                    Error : {errMessage}
-                </Alert>
-            )
-        }
-        else{
-            return(
-                <div>
-                    Main
-                </div>
-            )
-        }
-
+        <div>
+            How To
+        </div>
     }
 }
 

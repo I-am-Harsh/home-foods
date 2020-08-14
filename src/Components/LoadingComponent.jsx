@@ -6,21 +6,21 @@ class Loading extends Component {
     state = {
         loading: 0
     }
-    small = false || this.props.small
+
     updateLoading = () => {
         this.setState({ loading: this.state.loading + 1 });
     }
 
     componentDidMount() {
-        if (!this.props.simple) {
+        const { small = false } = this.props;
+        if (small) {
             setInterval(() => this.updateLoading(), 1000);
         }
     }
 
     render() {
-        const loading = this.state.loading
-
-        if (!this.complex) {
+        const { loading } = this.state;
+        if (!this.props.small) {
             return (
                 <div>
                     <div className = 'center'>

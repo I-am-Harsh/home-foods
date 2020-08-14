@@ -94,7 +94,7 @@ class HeaderComponent extends Component{
                             </NavItem>
                             <NavItem>
                                 <Link className='nav-link' to = {'/instruction'}>
-                                    Instructions
+                                    How To
                                 </Link>
                             </NavItem>
                             {
