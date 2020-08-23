@@ -12,8 +12,8 @@ class Home extends Component {
             loading: false,
             err: false,
             errMessage: '',
-            dark : true,
-            transparent : true
+            dark: true,
+            transparent: true
         }
         this.homeRef = React.createRef();
         this.once = 0;
@@ -26,17 +26,49 @@ class Home extends Component {
         window.removeEventListener('scroll', this.isInViewport);
     }
 
+    debounce = (func, delay) => {
+        let inDebounce
+        return function () {
+            const context = this
+            const args = arguments
+            clearTimeout(inDebounce)
+            inDebounce = setTimeout(() => func.apply(context, args), delay)
+        }
+    }
+
+    throttle = (func, limit) => {
+        let lastFunc
+        let lastRan
+        return function () {
+            const context = this
+            const args = arguments
+            if (!lastRan) {
+                func.apply(context, args)
+                lastRan = Date.now()
+            } else {
+                clearTimeout(lastFunc)
+                lastFunc = setTimeout(function () {
+                    if ((Date.now() - lastRan) >= limit) {
+                        func.apply(context, args)
+                        lastRan = Date.now()
+                    }
+                }, limit - (Date.now() - lastRan))
+            }
+        }
+    }
+
     isInViewport = () => {
         const { headerStyle, changeHeaderStyle } = this.props;
-        if (this.homeRef) {
+        if (this.homeRef.current) {
             const top = this.homeRef.current.getBoundingClientRect().top;
-            if(top <= 100){
-                if(headerStyle === 'mb-5'){
+            console.log('applied');
+            if (top <= 60) {
+                if (headerStyle === 'mb-5') {
                     changeHeaderStyle('dark mb-5');
                 }
             }
-            else{
-                if(headerStyle === 'dark mb-5'){
+            else {
+                if (headerStyle === 'dark mb-5') {
                     changeHeaderStyle('mb-5');
                 }
             }
@@ -73,7 +105,7 @@ class Home extends Component {
         }
         else {
             return (
-                <div style={{ height: 1000 }} ref = {this.homeRef} >
+                <div style={{ height: 1000 }} ref={this.homeRef} >
                     Main
                 </div>
             )
