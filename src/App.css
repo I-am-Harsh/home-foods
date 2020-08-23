@@ -1,7 +1,29 @@
 .center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  color: aliceblue;
+}
+
+#heading{
+  font-size: 100px;
+  font-weight: bolder;
+}
+
+.parallax {
+  background-image: url("./parallax.jpg");
+  
+  height: 100%; 
+/* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+html,body, #root, .App, .main{
+  height : 100%;
 }

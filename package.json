@@ -20,6 +20,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-scroll-parallax": "^2.3.4",
     "reactstrap": "^8.4.1",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.3.0",

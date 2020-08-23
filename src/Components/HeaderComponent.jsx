@@ -1,58 +1,60 @@
-import React, {Component} from 'react';
-import {Nav, Navbar, NavItem} from 'reactstrap';
-import { Collapse, NavbarToggler} from 'reactstrap';
+import React, { Component } from 'react';
+import { Nav, Navbar, NavItem } from 'reactstrap';
+import { Collapse, NavbarToggler } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-class HeaderComponent extends Component{
-    constructor(props){
+class HeaderComponent extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            collapsed : false,
-            width : window.innerWidth
+            collapsed: false,
+            width: window.innerWidth,
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         window.addEventListener('resize', this.handleWindowSizeChange);
     }
-    
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleWindowSizeChange);
     }
 
     handleWindowSizeChange = () => {
+        console.log('changed');
         this.setState({ width: window.innerWidth });
-      };
 
-    toggleNavbar = () =>{
+    };
+
+    toggleNavbar = () => {
         this.setState({
-            collapsed : !this.state.collapsed
+            collapsed: !this.state.collapsed
         })
     }
 
     logoutClick = () => {
         // logout button
-        this.props.logout() 
+        this.props.logout()
         this.toggleNavbar()
     }
 
     userAction = () => {
         let action = '';
-        if(this.props.isLoggedIn){
-            if(this.props.admin){
+        if (this.props.isLoggedIn) {
+            if (this.props.admin) {
                 action = (
                     <NavItem>
-                        <Link className='nav-link' to = {'/manage'} onClick={this.toggleNavbar}>
+                        <Link className='nav-link' to={'/manage'} onClick={this.toggleNavbar}>
                             Manage
                         </Link>
                     </NavItem>
                 )
             }
-            else{
+            else {
                 action = (
                     <div>
                         <NavItem>
-                            <Link className='nav-link' to = {'/profile'} onClick={this.toggleNavbar}>
+                            <Link className='nav-link' to={'/profile'} onClick={this.toggleNavbar}>
                                 Profile
                             </Link>
                         </NavItem>
@@ -63,37 +65,41 @@ class HeaderComponent extends Component{
         return action;
     }
 
-    
-    render(){
-        const width = this.state.width
+    changeHeaderStyle = () => {
+
+    }
+
+
+    render() {
+        const { width } = this.state;
+        const { headerStyle = 'mb-5' } = this.props;
         var mobile;
-        if(width <= 500){
+        if (width <= 768) {
             mobile = true
         }
-        else{
+        else {
             mobile = false
         }
 
-
         // for pc
-        if(!mobile){
-            return(            
-                <Navbar color='dark mb-5' light style={{color:'white'}} fixed='top' expand='md'>
+        if (!mobile) {
+            return (
+                <Navbar color={headerStyle} light style={{ color: 'white' }} fixed='top' expand='md'>
                     <div className='container-fluid'>
-                        <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>{this.props.name}</Link>
+                        <Link className='navbar-brand' style={{ color: 'white' }} to={'/'}>{this.props.name}</Link>
                         <Nav>
                             <NavItem>
-                                <Link className='nav-link' to = {'/'}>
+                                <Link className='nav-link' to={'/'}>
                                     Home
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to = {'/leaderboard'}>
-                                    Leaderboard
+                                <Link className='nav-link' to={'/leaderboard'}>
+                                    Leaderboard 
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to = {'/instruction'}>
+                                <Link className='nav-link' to={'/instruction'}>
                                     How To
                                 </Link>
                             </NavItem>
@@ -101,22 +107,22 @@ class HeaderComponent extends Component{
                                 this.userAction()
                             }
                             {
-                                this.props.isLoggedIn ? 
-                                <NavItem>
-                                    <input type='button' className='nav-link button-link' onClick={this.props.logout} 
-                                        value = 'Logout'
-                                    />
-                                </NavItem>
-                                : 
-                                <React.Fragment>
+                                this.props.isLoggedIn ?
                                     <NavItem>
-                                        <Link className='nav-link' 
-                                            to = {{pathname : "/login", state: {signup : false}}}
-                                        >
-                                            Login
-                                        </Link>
+                                        <input type='button' className='nav-link button-link' onClick={this.props.logout}
+                                            value='Logout'
+                                        />
                                     </NavItem>
-                                </React.Fragment>
+                                    :
+                                    <React.Fragment>
+                                        <NavItem>
+                                            <Link className='nav-link'
+                                                to={{ pathname: "/login", state: { signup: false } }}
+                                            >
+                                                Login
+                                        </Link>
+                                        </NavItem>
+                                    </React.Fragment>
                             }
                         </Nav>
                     </div>
@@ -125,25 +131,25 @@ class HeaderComponent extends Component{
         }
 
         // for mobile
-        return(
+        return (
             <div>
-                <Navbar color="dark" dark fixed='top'>
-                    <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Candidate Voting</Link>
-                    <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
+                <Navbar color={headerStyle} dark fixed='top'>
+                    <Link className='navbar-brand' style={{ color: 'white' }} to={'/'}>{this.props.name}</Link>
+                    <NavbarToggler color = 'white' onClick={this.toggleNavbar} className="mr-2" />
                     <Collapse isOpen={this.state.collapsed} navbar>
                         <Nav navbar>
                             <NavItem>
-                                <Link className='nav-link' to = {'/'} onClick={this.toggleNavbar}>
+                                <Link className='nav-link' to={'/'} onClick={this.toggleNavbar}>
                                     Home
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to = {'/leaderboard'} onClick={this.toggleNavbar}>
+                                <Link className='nav-link' to={'/leaderboard'} onClick={this.toggleNavbar}>
                                     Leaderboard
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to = {'/instruction'} onClick={this.toggleNavbar}>
+                                <Link className='nav-link' to={'/instruction'} onClick={this.toggleNavbar}>
                                     Instruction
                                 </Link>
                             </NavItem>
@@ -151,24 +157,24 @@ class HeaderComponent extends Component{
                                 this.userAction()
                             }
                             {
-                                this.props.isLoggedIn ? 
-                                <NavItem>
-                                    <input type='button' className='nav-link button-link' 
-                                        onClick={this.logoutClick} 
-                                        value = 'Logout'
-                                    />  
-                                </NavItem>
-                                : 
-                                <React.Fragment>
+                                this.props.isLoggedIn ?
                                     <NavItem>
-                                        <Link className='nav-link' 
-                                            to = {{pathname : "/login", state: {signup : false}}} 
-                                            onClick={this.toggleNavbar}
-                                        >
-                                            Login
-                                        </Link>
+                                        <input type='button' className='nav-link button-link'
+                                            onClick={this.logoutClick}
+                                            value='Logout'
+                                        />
                                     </NavItem>
-                                </React.Fragment>   
+                                    :
+                                    <React.Fragment>
+                                        <NavItem>
+                                            <Link className='nav-link'
+                                                to={{ pathname: "/login", state: { signup: false } }}
+                                                onClick={this.toggleNavbar}
+                                            >
+                                                Login
+                                        </Link>
+                                        </NavItem>
+                                    </React.Fragment>
                             }
                         </Nav>
                     </Collapse>
