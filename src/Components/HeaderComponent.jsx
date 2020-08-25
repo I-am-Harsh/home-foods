@@ -9,21 +9,36 @@ class HeaderComponent extends Component {
         this.state = {
             collapsed: false,
             width: window.innerWidth,
+            headerStyle : 'mb-5'
         }
     }
 
     componentDidMount() {
         window.addEventListener('resize', this.handleWindowSizeChange);
+        window.addEventListener('scroll', this.changeMenuColor);
+        console.log(window.screenTop);
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleWindowSizeChange);
+        window.addEventListener('scroll', this.changeMenuColor);
+    }
+
+    changeMenuColor = () => {
+        if(window.scrollY > 300){
+            this.setState({
+                headerStyle : 'dark mb-5'
+            })
+        }
+        if(window.scrollY < 200){
+            this.setState({
+                headerStyle : 'mb-5'
+            })
+        }
     }
 
     handleWindowSizeChange = () => {
-        console.log('changed');
         this.setState({ width: window.innerWidth });
-
     };
 
     toggleNavbar = () => {
@@ -38,41 +53,9 @@ class HeaderComponent extends Component {
         this.toggleNavbar()
     }
 
-    userAction = () => {
-        let action = '';
-        if (this.props.isLoggedIn) {
-            if (this.props.admin) {
-                action = (
-                    <NavItem>
-                        <Link className='nav-link' to={'/manage'} onClick={this.toggleNavbar}>
-                            Manage
-                        </Link>
-                    </NavItem>
-                )
-            }
-            else {
-                action = (
-                    <div>
-                        <NavItem>
-                            <Link className='nav-link' to={'/profile'} onClick={this.toggleNavbar}>
-                                Profile
-                            </Link>
-                        </NavItem>
-                    </div>
-                )
-            }
-        }
-        return action;
-    }
-
-    changeHeaderStyle = () => {
-
-    }
-
-
     render() {
-        const { width } = this.state;
-        const { headerStyle = 'mb-5' } = this.props;
+        const { width, headerStyle } = this.state;
+        const {  name } = this.props;
         var mobile;
         if (width <= 768) {
             mobile = true
@@ -84,9 +67,9 @@ class HeaderComponent extends Component {
         // for pc
         if (!mobile) {
             return (
-                <Navbar color={headerStyle} light style={{ color: 'white' }} fixed='top' expand='md'>
+                <Navbar color={headerStyle} dark style={{fontWeight : 'bolder', fontSize : 20}} fixed='top' expand='md'>
                     <div className='container-fluid'>
-                        <Link className='navbar-brand' style={{ color: 'white' }} to={'/'}>{this.props.name}</Link>
+                        <Link className='navbar-brand' style = {{fontSize : 25}} to={'/'}>{name}</Link>
                         <Nav>
                             <NavItem>
                                 <Link className='nav-link' to={'/'}>
@@ -94,36 +77,20 @@ class HeaderComponent extends Component {
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to={'/leaderboard'}>
-                                    Leaderboard 
+                                <Link className='nav-link' to={'/recipes'}>
+                                    Recipes 
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to={'/instruction'}>
-                                    How To
+                                <Link className='nav-link' to={'/about'}>
+                                    About
                                 </Link>
                             </NavItem>
-                            {
-                                this.userAction()
-                            }
-                            {
-                                this.props.isLoggedIn ?
-                                    <NavItem>
-                                        <input type='button' className='nav-link button-link' onClick={this.props.logout}
-                                            value='Logout'
-                                        />
-                                    </NavItem>
-                                    :
-                                    <React.Fragment>
-                                        <NavItem>
-                                            <Link className='nav-link'
-                                                to={{ pathname: "/login", state: { signup: false } }}
-                                            >
-                                                Login
-                                        </Link>
-                                        </NavItem>
-                                    </React.Fragment>
-                            }
+                            <NavItem>
+                                <Link className='nav-link' to={'/contact'}>
+                                    Contact
+                                </Link>
+                            </NavItem>
                         </Nav>
                     </div>
                 </Navbar>
@@ -133,49 +100,31 @@ class HeaderComponent extends Component {
         // for mobile
         return (
             <div>
-                <Navbar color={headerStyle} dark fixed='top'>
-                    <Link className='navbar-brand' style={{ color: 'white' }} to={'/'}>{this.props.name}</Link>
+                <Navbar color= 'dark mb-5' style = {{fontWeight : 'bolder'}} dark fixed='top'>
+                    <Link className='navbar-brand'  to={'/'}>{this.props.name}</Link>
                     <NavbarToggler color = 'white' onClick={this.toggleNavbar} className="mr-2" />
                     <Collapse isOpen={this.state.collapsed} navbar>
-                        <Nav navbar>
+                        <Nav navbar style={{ color: 'white' }}>
                             <NavItem>
                                 <Link className='nav-link' to={'/'} onClick={this.toggleNavbar}>
                                     Home
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to={'/leaderboard'} onClick={this.toggleNavbar}>
-                                    Leaderboard
+                                <Link className='nav-link' to={'/recipes'} onClick={this.toggleNavbar}>
+                                    Recipes
                                 </Link>
                             </NavItem>
                             <NavItem>
-                                <Link className='nav-link' to={'/instruction'} onClick={this.toggleNavbar}>
-                                    Instruction
+                                <Link className='nav-link' to={'/about'} onClick={this.toggleNavbar}>
+                                    About
                                 </Link>
                             </NavItem>
-                            {
-                                this.userAction()
-                            }
-                            {
-                                this.props.isLoggedIn ?
-                                    <NavItem>
-                                        <input type='button' className='nav-link button-link'
-                                            onClick={this.logoutClick}
-                                            value='Logout'
-                                        />
-                                    </NavItem>
-                                    :
-                                    <React.Fragment>
-                                        <NavItem>
-                                            <Link className='nav-link'
-                                                to={{ pathname: "/login", state: { signup: false } }}
-                                                onClick={this.toggleNavbar}
-                                            >
-                                                Login
-                                        </Link>
-                                        </NavItem>
-                                    </React.Fragment>
-                            }
+                            <NavItem>
+                                <Link className='nav-link' to={'/contact'} onClick={this.toggleNavbar}>
+                                    Contact
+                                </Link>
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </Navbar>

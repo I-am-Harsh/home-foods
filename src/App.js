@@ -8,9 +8,7 @@ import MainComponent from './Components/MainComponent';
 function App() {
   return (
     <div className="App">
-      <ParallaxProvider>
-        <MainComponent/>  
-      </ParallaxProvider>    
+        <MainComponent/>      
     </div>
   );
 }

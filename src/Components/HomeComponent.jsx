@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Alert } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
+import { Badge } from '@material-ui/core';
 
+import { getHomeData } from '../requests';
 import Loading from './LoadingComponent';
+import RecipeCard from './RecipeCard';
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // set true
             loading: false,
             err: false,
             errMessage: '',
-            dark: true,
-            transparent: true
+            data: [1, 2, 3, 4, 5, 6, 6, 7]
         }
         this.homeRef = React.createRef();
-        this.once = 0;
     }
     componentDidMount() {
-        window.addEventListener('scroll', this.isInViewport);
+        // window.addEventListener('scroll', this.isInViewport);
+        if(this.props.parallaxText !== 'Order. Cook.'){
+            this.props.changeParallaxText('Order. Cook.');
+        }
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.isInViewport);
-    }
+    // componentWillUnmount() {
+    //     window.removeEventListener('scroll', this.isInViewport);
+    // }
 
     debounce = (func, delay) => {
         let inDebounce
@@ -61,8 +65,7 @@ class Home extends Component {
         const { headerStyle, changeHeaderStyle } = this.props;
         if (this.homeRef.current) {
             const top = this.homeRef.current.getBoundingClientRect().top;
-            console.log('applied');
-            if (top <= 60) {
+            if (top <= 110) {
                 if (headerStyle === 'mb-5') {
                     changeHeaderStyle('dark mb-5');
                 }
@@ -89,10 +92,57 @@ class Home extends Component {
             })
     }
 
+    displayNewBadge = (date) => {
+        const dateToday = new Date();
+        const dateGiven = new Date(date);
+        console.log(dateToday - dateGiven);
+        if(dateToday - dateGiven < 7){
+            return true
+        }
+        return false;
+    }
+
+    showRecipes = (classes) => {
+        if (this.state.loading) {
+            // skeleton code
+        }
+        else {
+            return (
+                <React.Fragment>
+                    <div className='row justify-content-center'>
+                        {
+                            this.state.data.map((dish, index) => {
+                                let badgeContent = '';
+                                let badgeColor = '';
+                                // if(this.displayNewBadge('23/08/2020')){
+                                //     badgeColor = 'error'
+                                //     badgeContent = 'New'
+                                // }
+                                return (
+                                    <div className='col-md-4 col-sm-12' key={index}>
+                                        <div style = {{margin : 20}}>
+                                            <Badge badgeContent={badgeContent} color={badgeColor}>
+                                                <RecipeCard dish='"./parallax.jpg"' />
+                                            </Badge>
+                                            <div style = {{textAlign : 'center'}}>
+                                                27 Aug 2020
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <button className='home-button'>
+                        View All
+                    </button>
+                </React.Fragment>
+            )
+        }
+    }
+
     render() {
         const { loading, err, errMessage } = this.state;
-
-        if (loading) return <Loading small />
 
         if (err) {
             return (
@@ -105,8 +155,23 @@ class Home extends Component {
         }
         else {
             return (
-                <div style={{ height: 1000 }} ref={this.homeRef} >
-                    Main
+                <div ref={this.homeRef} style = {{paddingTop : '50px'}} >
+                    <div style = {{textAlign : 'center', fontWeight : 'bold', fontFamily : 'sans-serif'}}>
+                        sollicitudin magna. Vestibulum pulvinar libero nibh,
+                        nec ultrices augue rhoncus eu. Donec nec arcu lobortis, ultricies sem sed, rhoncus felis.
+                        Curabitur aliquet hendrerit turpis vel ornare. Proin scelerisque congue nunc, in aliquet mauris
+                        venenatis vitae. Suspendisse potenti. Mauris rutrum erat a dignissim sollicitudin. Mauris varius
+                        magna ac eros sodales accumsan. Donec luctus velit quis ultrices efficitur. Duis at ullamcorper
+                        sapien. In quis orci vel eros pellentesque sollicitudin. Phasellus nisl lacus, facilisis at mauris viverra, gravida faucibus est.
+                    </div>
+                    <div className='home-content'>
+                        <h1>
+                            Some of our recipes
+                        </h1>
+                        <div id='recipe'>
+                            {this.showRecipes()}
+                        </div>
+                    </div>
                 </div>
             )
         }
