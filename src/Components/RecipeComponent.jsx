@@ -42,8 +42,8 @@ class Recipe extends Component{
     }
 
     componentDidMount(){
-        if(this.props.parallaxText !== 'Recipe'){
-            this.props.changeParallaxText('Recipe')
+        if(this.props.parallaxText !== 'Recipes'){
+            this.props.changeParallaxText('Recipes')
         }
     }
 

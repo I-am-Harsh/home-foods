@@ -16,7 +16,6 @@ class HeaderComponent extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.handleWindowSizeChange);
         window.addEventListener('scroll', this.changeMenuColor);
-        console.log(window.screenTop);
     }
 
     componentWillUnmount() {

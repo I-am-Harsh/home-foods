@@ -25,9 +25,7 @@ const getMethod = (data) => {
 
 const dateConvert = (text) => {
     const splitDate = text.split('/')
-    console.log(splitDate);
     const date = new Date(splitDate[2], splitDate[1] -1, splitDate[0]);
-    // console.log(date.toString());
     return date;
 }
 
@@ -36,7 +34,7 @@ router
 // initial fetch
 // only 9
 .get('/', (req, res) => {
-    Recipe.find({}, {sort : -1}).limit(9)
+    Recipe.find({}).sort({_id : -1}).limit(9)
     .then((result) => {
         res.json({success : true, result : result})
     })
@@ -56,9 +54,6 @@ router
 
 .get('/:name', (req, res) => {
     let dishName = req.params.name
-    // req.params.name.split('-').map(item => dishName += item);
-    console.log(dishName);
-
     Recipe.findOne({url : dishName})
     .then((result) => {
         res.json({success : true, result : result})

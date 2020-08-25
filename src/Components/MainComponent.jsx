@@ -7,6 +7,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Home from './HomeComponent';
 import Header from './HeaderComponent';
 import Recipe from './RecipeComponent';
+import Dish from './DishComponent';
 
 
 class MainComponent extends Component {
@@ -15,33 +16,12 @@ class MainComponent extends Component {
         this.state = {
             url: window.location.hostname,
             parallaxText: 'Order. Cook.',
-            parallaxImg: './parallax.jpg',
-            url : '/'
+            parallaxImg: '/parallax.jpg',
+            font : 100
         }
         this.containerRef = React.createRef();
     }
 
-    componentDidMount(){
-        const url = window.location.pathname;
-        this.setState({url : url});
-        switch(url){
-            case url === '/recipes':
-                console.log('asd');
-                this.changeParallaxText('Recipes');
-                break;
-
-            case '/about':
-                this.changeParallaxText('About');
-                break;
-
-            case '/contact':
-                this.changeParallaxText('Recipes');
-                break;
-            
-            default : 
-                this.changeParallaxText('Order. Cook.');
-        }
-    }
 
     changeHeaderStyle = (style) => {
         this.setState({
@@ -49,9 +29,11 @@ class MainComponent extends Component {
         })
     }
 
-    changeParallaxText = (text) => {
+    changeParallaxText = (text, num) => {
+        const font = num || 100;
         this.setState({
-            parallaxText: text
+            parallaxText: text,
+            font : font
         })
     }
 
@@ -59,7 +41,7 @@ class MainComponent extends Component {
         const { headerStyle, parallaxText, parallaxImg } = this.state;
         return (
             <div className='main'>
-                <div id='heading' className='center'>
+                <div id='heading' className='center' style = {{fontSize: this.state.font}}>
                     {parallaxText}
                 </div>
                 <div className='scrollDown'>
@@ -79,6 +61,14 @@ class MainComponent extends Component {
                                 />
                                 }
                             />
+                            <Route exact path='/recipes/*'
+                                component={(props) => <Dish {...props}
+                                    changeParallaxText={this.changeParallaxText}
+                                    parallaxText = {this.state.parallaxText}
+                                    changeParallaxFont = {this.changeParallaxFont}
+                                />
+                                }
+                            />
                             <Route exact path='/recipes'
                                 component={(props) => <Recipe {...props}
                                     changeParallaxText={this.changeParallaxText}
@@ -86,7 +76,7 @@ class MainComponent extends Component {
                                 />
                                 }
                             />
-                            <Route exact path='/about'
+                            {/* <Route exact path='/about'
                                 component={(props) => <Recipe {...props}
                                     changeParallaxText={this.changeParallaxText}
                                     parallaxText = {this.state.parallaxText}
@@ -99,11 +89,11 @@ class MainComponent extends Component {
                                     parallaxText = {this.state.parallaxText}
                                 />
                                 }
-                            />
+                            /> */}
                         </Switch>
                     </BrowserRouter>
                 </div>
-                <div className='parallax' style={{ backgroundImage: `url(${parallaxImg})` }} />
+                {/* <div className='parallax' style={{ backgroundImage: `url(${parallaxImg})` }} /> */}
             </div>
         );
     }

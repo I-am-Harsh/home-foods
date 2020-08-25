@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Alert, Button } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import { Badge } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { Cookies } from 'react-cookie';
 
-import { getHomeData } from '../requests';
-import Loading from './LoadingComponent';
 import RecipeCard from './RecipeCard';
+import withApi from './withApi';
 
 
 class Home extends Component {
@@ -15,20 +15,19 @@ class Home extends Component {
             loading: false,
             err: false,
             errMessage: '',
-            data: [1, 2, 3, 4, 5, 6, 6, 7]
+            data: [1, 2, 3, 4, 5, 6, 6, 7, 9]
         }
         this.homeRef = React.createRef();
     }
+
+
     componentDidMount() {
-        // window.addEventListener('scroll', this.isInViewport);
         if(this.props.parallaxText !== 'Order. Cook.'){
-            this.props.changeParallaxText('Order. Cook.');
+            this.props.changeParallaxText('Order. Cook.', 100);
         }
+        this.props.getHomeData();
     }
 
-    // componentWillUnmount() {
-    //     window.removeEventListener('scroll', this.isInViewport);
-    // }
 
     debounce = (func, delay) => {
         let inDebounce
@@ -78,54 +77,73 @@ class Home extends Component {
         }
     }
 
-    apiCall = () => {
-        axios.get(`${process.env.REACT_APP_API}/`)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => {
-                this.setState({
-                    loading: false,
-                    err: true,
-                    errMessage: err
-                })
-            })
-    }
-
     displayNewBadge = (date) => {
         const dateToday = new Date();
         const dateGiven = new Date(date);
-        console.log(dateToday - dateGiven);
+        // console.log(dateGiven);
+        // console.log('Diff : ',dateToday - dateGiven);
         if(dateToday - dateGiven < 7){
             return true
         }
         return false;
     }
 
-    showRecipes = (classes) => {
-        if (this.state.loading) {
-            // skeleton code
+    handleDishClick = (dish) => {
+        const cookie = new Cookies();
+        cookie.set('dish',dish);
+        this.props.history.push(`/recipes/${dish.url}`);
+    }
+
+    showRecipes = () => {
+        // loading
+        if (this.props.loading) {
+            return(
+                <div className='row justify-content-center'>
+                    {
+                        this.state.data.map((num, index) => {
+                            return(
+                                <div className='col-md-4 col-sm-12' key={index}>
+                                    <div style = {{margin : 20}}>
+                                        <Skeleton variant="rect"  height={150} animation = "wave" />
+                                        <Skeleton variant = 'text' animation = 'wave'/>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            )
         }
+        // display
         else {
             return (
                 <React.Fragment>
                     <div className='row justify-content-center'>
                         {
-                            this.state.data.map((dish, index) => {
+                            this.props.data.map((dish, index) => {
                                 let badgeContent = '';
                                 let badgeColor = '';
-                                // if(this.displayNewBadge('23/08/2020')){
+                                // if(this.displayNewBadge(dish.date)){
                                 //     badgeColor = 'error'
                                 //     badgeContent = 'New'
                                 // }
+                                // console.log(dish.date);
+                                const date = new Date(dish.date);
                                 return (
                                     <div className='col-md-4 col-sm-12' key={index}>
                                         <div style = {{margin : 20}}>
-                                            <Badge badgeContent={badgeContent} color={badgeColor}>
-                                                <RecipeCard dish='"./parallax.jpg"' />
+                                            <Badge badgeContent={badgeContent} 
+                                                color={badgeColor} 
+                                                onClick = {() => this.handleDishClick(dish)}
+                                            >
+                                                <RecipeCard 
+                                                    dish = {dish} 
+                                                    img='"./parallax.jpg"' 
+                                                    {...this.props} 
+                                                />
                                             </Badge>
                                             <div style = {{textAlign : 'center'}}>
-                                                27 Aug 2020
+                                                {(new Date()).toString().replace(/\S+\s(\S+)\s(\d+)\s(\d+)\s.*/,'$2-$1-$3')}
                                             </div>
                                         </div>
                                     </div>
@@ -180,5 +198,5 @@ class Home extends Component {
 }
 
 
-export default Home;
+export default withApi(Home);
 

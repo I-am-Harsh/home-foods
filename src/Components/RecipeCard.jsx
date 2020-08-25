@@ -78,7 +78,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeCard(props) {
     const classes = useStyles();
-    const  url  = props.dish;
+    const { displayName }  = props.dish;
+    const img = props.img;
     return (
         <div className={classes.root}>
             <ButtonBase
@@ -88,11 +89,12 @@ export default function RecipeCard(props) {
                 style={{
                     width: '100%',
                 }}
+                // onClick = {() => this.props.history.push()}
             >
                 <span
                     className={classes.imageSrc}
                     style={{
-                        backgroundImage : `url(${url})`
+                        backgroundImage : `url(${img})`
                     }}
                 />
                 <span className={classes.imageBackdrop} />
@@ -103,7 +105,7 @@ export default function RecipeCard(props) {
                         color="inherit"
                         className={classes.imageTitle}
                     >
-                        Chilli Paneer
+                        {displayName}
                         <span className={classes.imageMarked} />
                     </Typography>
                 </span>
