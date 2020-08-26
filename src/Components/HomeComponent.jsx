@@ -23,7 +23,7 @@ class Home extends Component {
 
     componentDidMount() {
         if(this.props.parallaxText !== 'Order. Cook.'){
-            this.props.changeParallaxText('Order. Cook.', 100);
+            this.props.changeParallaxText('Order. Cook.',100);
         }
         this.props.getHomeData();
     }

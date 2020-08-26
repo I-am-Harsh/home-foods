@@ -68,7 +68,7 @@ class HeaderComponent extends Component {
             return (
                 <Navbar color={headerStyle} dark style={{fontWeight : 'bolder', fontSize : 20}} fixed='top' expand='md'>
                     <div className='container-fluid'>
-                        <Link className='navbar-brand' style = {{fontSize : 25}} to={'/'}>{name}</Link>
+                        <Link className='navbar-brand' to={'/'}>{name}</Link>
                         <Nav>
                             <NavItem>
                                 <Link className='nav-link' to={'/'}>

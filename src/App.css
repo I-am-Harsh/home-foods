@@ -17,6 +17,7 @@ html,body, #root, .App, .main{
   font-weight: bolder;
 }
 
+
 .home-content {
   text-align: center;
   padding-top: 40px;
@@ -50,6 +51,15 @@ html,body, #root, .App, .main{
   /* justify-content: center; */
 }
 
+.nav-link{
+  color : white
+}
+
+.navbar-brand{
+  font-weight: bolder;
+  font-size: 25px;
+}
+
 .parallax {
   
   height: 100%; 
@@ -80,6 +90,10 @@ html,body, #root, .App, .main{
 @media (max-width : 1024px){
   .recipe-card-root{
     min-width: 250px;
+  }
+
+  #heading {
+    font-size: 90px;
   }
 }
 
