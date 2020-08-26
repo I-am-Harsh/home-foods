@@ -130,8 +130,8 @@ class Home extends Component {
                                 // console.log(dish.date);
                                 const date = new Date(dish.date);
                                 return (
-                                    <div className='col-md-4 col-sm-12' key={index}>
-                                        <div style = {{margin : 20}}>
+                                    <div className='col-md-6 col-lg-4' key={index}>
+                                        <div className = 'recipe-card'>
                                             <Badge badgeContent={badgeContent} 
                                                 color={badgeColor} 
                                                 onClick = {() => this.handleDishClick(dish)}

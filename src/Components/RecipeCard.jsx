@@ -81,7 +81,7 @@ export default function RecipeCard(props) {
     const { displayName }  = props.dish;
     const img = props.img;
     return (
-        <div className={classes.root}>
+        <div className='recipe-card-root'>
             <ButtonBase
                 focusRipple
                 className={classes.image}

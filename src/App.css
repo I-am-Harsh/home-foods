@@ -28,7 +28,7 @@ html,body, #root, .App, .main{
   border-radius : 20px; 
   border : 1px solid #343a40;
   background-color: white;
-  color : 'black';
+  color : black;
   font-size: x-large;
   /* background-color : #343a40; */
 }
@@ -36,6 +36,12 @@ html,body, #root, .App, .main{
 .home-button:hover{
   color : white;
   background-color : #343a40;
+}
+
+@media (max-width : 768px){
+  .home-button{
+    font-size: larger;  
+  } 
 }
 
 .home-card {
@@ -52,6 +58,29 @@ html,body, #root, .App, .main{
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.recipe-card{
+  margin: 20px;
+}
+
+@media (max-width : 600px){
+  .recipe-card {
+    margin-bottom: 20px;
+  }
+}
+
+.recipe-card-root{
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 300px;
+  width: 100%;
+}
+
+@media (max-width : 1024px){
+  .recipe-card-root{
+    min-width: 250px;
+  }
 }
 
 .scrollDown{
