@@ -21,6 +21,7 @@ class Dish extends Component {
         this.state = {
             data: dishStored,
             loading: loading,
+            // loading : true,
             err: false,
             errMessage: '',
             dishUrl: dishUrl
@@ -28,7 +29,7 @@ class Dish extends Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         if (this.state.data === undefined) {
             axios.get(`${process.env.REACT_APP_API}/food/${this.state.dishUrl}`)
                 .then(response => {
@@ -40,7 +41,7 @@ class Dish extends Component {
                         }, () => {
                             if (this.props.parallaxText !== this.state.data.displayName) {
                                 this.props.changeParallaxText(this.state.data.displayName, 60);
-                            } 
+                            }
                         })
                     }
                 })
@@ -53,13 +54,22 @@ class Dish extends Component {
         }
     }
 
-    displayIngredients = () => {
+    displayIngredients = (loading) => {
         const { ingredients } = this.state.data
-        if(this.state.data){
-            return(
-                ingredients.map((item, index) =>{
-                    return(
-                        <div style = {{textAlign : 'left'}}>
+        if (loading) {
+            return (
+                <React.Fragment>
+                    <Skeleton variant='text' animation='wave' />
+                    <Skeleton variant='text' animation='wave' />
+                    <Skeleton variant='text' animation='wave' />
+                </React.Fragment>
+            )
+        }
+        if (this.state.data) {
+            return (
+                ingredients.map((item, index) => {
+                    return (
+                        <div style={{ textAlign: 'left' }}>
                             <h4>
                                 {item.name}
                             </h4>
@@ -77,22 +87,33 @@ class Dish extends Component {
         }
     }
 
-    displayMethod = () => {
+    displayMethod = (loading) => {
         const { method } = this.state.data;
-        if(this.state.data){
+        if(loading){
             return(
+                // <div className = 'col-md-4 offset-md-4'>
+                    <React.Fragment>
+                        <Skeleton variant='text' width = '100%' animation='wave' />
+                        <Skeleton variant='text' width = '100%' animation='wave' />
+                        <Skeleton variant='text' width = '100%' animation='wave' />
+                    </React.Fragment>
+                // </div>
+            )
+        }
+        if (this.state.data) {
+            return (
                 method.map((item, index) => {
-                    return(
-                        <div class="col-md-4 offset-md-4">
+                    return (
+                        <div class="col-sm-12 col-md-4 offset-md-4">                        
                             <h3>
                                 {item.name}
                             </h3>
-                            <ol style = {{textAlign : 'left', marginLeft : 20}}>
-                            {
-                                item.instruction.map((name, index) => (
-                                    <li>{name}</li>
-                                ))
-                            }
+                            <ol style={{ textAlign: 'left'}}>
+                                {
+                                    item.instruction.map((name, index) => (
+                                        <li>{name}</li>
+                                    ))
+                                }
                             </ol>
                         </div>
                     )
@@ -101,30 +122,75 @@ class Dish extends Component {
         }
     }
 
+    displayDescription = (loading) => {
+        if(loading){
+            return(
+                <Skeleton variant = 'text' height = {100} animation = 'wave'/>
+            )
+        }
+        else{
+            return(
+                this.state.data.description
+            )
+        }
+    }
+
+    displayImage = (loading) => {
+        if(loading){
+            return(
+                <Skeleton variant = 'rect'  
+                    width = '100%'
+                    height = {200}
+                    animation = 'wave'
+                />
+            )
+        }
+        else{
+            return(
+                <img src='/parallax.jpg' width='100%' />
+            )
+        }
+    }
+
     render() {
-        if(this.state.data){
+        if (this.state.data) {
             const { displayName, method, ingredients, description } = this.state.data;
             console.log(method);
         }
-        if(this.state.loading){
-            return(
-                <div style = {{display : 'flex', flexDirection : 'column'}}>
-                    <div style ={{width : '100%'}}>
-                    <Skeleton variant="rect" width = {"100%"}  height={300} animation = "wave" />
+        if (this.state.loading) {
+            return (
+                // code for loading
+                <div className='container mt-5' style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Verdana' }}>
+                    <div className='col mb-5'>
+                    {
+                        this.displayDescription(true)
+                    }
+                </div>
+                    <div className='col-md-4 offset-md-4 mb-5'>
+                        {
+                            this.displayImage(true)
+                        }
                     </div>
-                    <div style ={{width : '100%'}}>
-                    <Skeleton variant = 'text' animation = 'wave'/>
-                    <Skeleton variant = 'text' animation = 'wave'/>
-                    <Skeleton variant = 'text' animation = 'wave'/>
-                    <Skeleton variant = 'text' animation = 'wave'/>
-
+                    <div className='col'>
+                        <div className='row'>
+                            <div className='col-md-3'>
+                                <h3>
+                                    <Skeleton type = 'rect' animation = 'wave'/>
+                                </h3>
+                                {this.displayIngredients(true)}
+                            </div>
+                            <div className='col-md-9'>
+                                <h2><Skeleton type = 'rect' animation = 'wave'/></h2>
+                                {this.displayMethod(true)}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )
         }
-        if(this.state.err){
+        if (this.state.err) {
             return (
-                <Alert color="danger"className = 'error'>
+                <Alert color="danger" className='error'>
                     Something went wrong please Refresh the page
                     <br />
                     Error : {this.state.errMessage}
@@ -139,11 +205,11 @@ class Dish extends Component {
                     This recipes prize itself in being very simple and easy to follow with visible point when something is done.
                 </div>
                 <div className='col-md-4 offset-md-4 mb-5'>
-                    <img src='/parallax.jpg' width = '100%' />
+                    <img src='/parallax.jpg' width='100%' />
                 </div>
                 <div className='col'>
                     <div className='row'>
-                        <div className='col-md-3'>
+                        <div className='col-sm-12 col-md-3'>
                             <h3>Ingredients</h3>
                             {this.displayIngredients()}
                         </div>
