@@ -123,3 +123,20 @@ h4{
   z-index: 1000;
   color: aliceblue;
 }
+
+.toast {
+  position : fixed;
+  bottom : 10%;
+  left : 5%
+}
+
+@media(max-width : 600px){
+  .toast{
+    left : 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    bottom: 0;
+    position: fixed;
+  }
+}

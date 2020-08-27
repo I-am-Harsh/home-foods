@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { Alert } from 'reactstrap';
 
 class Dish extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class Dish extends Component {
                         })
                     }
                 })
-                .catch(err => this.setState({ loading: false, err: true, errMessage: err }));
+                .catch(err => this.setState({ loading: false, err: true, errMessage: err.message }));
         }
         else {
             if (this.props.parallaxText !== this.state.data.displayName) {
@@ -119,6 +120,15 @@ class Dish extends Component {
 
                     </div>
                 </div>
+            )
+        }
+        if(this.state.err){
+            return (
+                <Alert color="danger"className = 'error'>
+                    Something went wrong please Refresh the page
+                    <br />
+                    Error : {this.state.errMessage}
+                </Alert>
             )
         }
         return (

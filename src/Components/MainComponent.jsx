@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { IconButton } from '@material-ui/core';
-import { Toast, ToastBody, ToastHeader } from 'reactstrap';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 
@@ -19,8 +18,7 @@ class MainComponent extends Component {
         this.state = {
             parallaxText: 'Order. Cook.',
             parallaxImg: '/parallax.jpg',
-            font: 100,
-            toast : true
+            font: 100
         }
         this.containerRef = React.createRef();
     }
@@ -40,35 +38,22 @@ class MainComponent extends Component {
         })
     }
 
-    closeToast = () => {
-        this.setState({
-            toast : false 
-        })
+    removeSessionOnRefresh = () => {
+        sessionStorage.removeItem('started');
+    }
+
+    componentDidMount(){
+        window.addEventListener('beforeunload', this.removeSessionOnRefresh);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('beforeunload', this.removeSessionOnRefresh);
     }
 
     render() {
         const { headerStyle, parallaxText, parallaxImg } = this.state;
-        if (this.props.err && this.props.data === '') {
-            return (
-                <Alert color="danger" style={{ position: 'absolute', top: 0, width: '100%' }}>
-                    There was some error, please reload the page. {this.props.errMessage}
-                </Alert>
-            )
-        }
-        
         return (
             <div className='main'>
-                {
-                    this.props.err && 
-                    <Toast className = 'bg-danger' style = {{position : 'absolute', bottom : "10%", left : '5%'}} isOpen = {this.state.toast}>
-                        <ToastHeader toggle = {this.closeToast}>
-                            Error Occurred
-                        </ToastHeader>
-                        <ToastBody>
-                            Viewing page in offline mode.
-                        </ToastBody>
-                    </Toast>
-                }
                 <div id='heading' className='center' style={{ fontSize: this.state.font }}>
                     {parallaxText}
                 </div>

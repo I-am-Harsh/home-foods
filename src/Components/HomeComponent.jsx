@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Alert } from 'reactstrap';
+import { Alert, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import { Badge } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Cookies } from 'react-cookie';
 
 import RecipeCard from './RecipeCard';
@@ -12,10 +14,11 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            err: false,
-            errMessage: '',
-            data: [1, 2, 3, 4, 5, 6, 6, 7, 9]
+            // loading: false,
+            // err: false,
+            // errMessage: '',
+            data: [1, 2, 3, 4, 5, 6, 6, 7, 9],
+            toast : true
         }
         this.homeRef = React.createRef();
     }
@@ -29,6 +32,11 @@ class Home extends Component {
         this.props.getHomeData();
     }
 
+    closeToast = () => {
+        this.setState({
+            toast : false 
+        })
+    }
 
     debounce = (func, delay) => {
         let inDebounce
@@ -117,6 +125,7 @@ class Home extends Component {
         }
         // display
         else {
+            console.log(this.props.data);
             return (
                 <React.Fragment>
                     <div className='row justify-content-center'>
@@ -161,8 +170,8 @@ class Home extends Component {
     }
 
     render() {
-        const { loading, err, errMessage } = this.props;
-        if (err) {
+        const { loading, err, errMessage, data } = this.props;
+        if (err && data === '') {
             return (
                 <Alert color="danger"className = 'error'>
                     Something went wrong please Refresh the page
@@ -174,6 +183,19 @@ class Home extends Component {
         else {
             return (
                 <div ref={this.homeRef} style = {{paddingTop : '50px'}} >
+                    {
+                    this.props.err && 
+                    <Toast className = 'bg-danger toast' 
+                        isOpen = {this.state.toast}
+                    >
+                        <ToastHeader toggle = {this.closeToast}>
+                            Error Occurred
+                        </ToastHeader>
+                        <ToastBody>
+                            Viewing page in offline mode.
+                        </ToastBody>
+                    </Toast>
+                    }
                     <div style = {{textAlign : 'center', fontWeight : 'bold', fontFamily : 'sans-serif'}}>
                         sollicitudin magna. Vestibulum pulvinar libero nibh,
                         nec ultrices augue rhoncus eu. Donec nec arcu lobortis, ultricies sem sed, rhoncus felis.

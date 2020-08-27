@@ -22,13 +22,12 @@ const WithApi = (OriginalComponent) => {
         getHomeData = () => {
             // session storage;
             const session = sessionStorage.getItem('started');
-            console.log(session);
             if(session){
                 const homeData = JSON.parse(localStorage.getItem('homeData'));
                 if(homeData){
                     this.setState({
                         data : homeData,
-                        loading : false
+                        loading : false  
                     })       
                 }
             }
@@ -36,6 +35,7 @@ const WithApi = (OriginalComponent) => {
                 axios.get(`${apiUrl}/food`)
                     .then(response => {
                         const { success, result } = response.data;
+                        console.log('erp1')
                         if (success === true) {
                             const cookie = new Cookies();
                             localStorage.setItem('homeData',JSON.stringify(result));
@@ -47,15 +47,20 @@ const WithApi = (OriginalComponent) => {
                         }
                     })
                     .catch(err => {
-                        const homeData = localStorage.getItem('homeData');
-                        console.log(homeData);
+                        const homeData = JSON.parse(localStorage.getItem('homeData'));
+                        console.log('err caught');
                         if(homeData){
                             sessionStorage.setItem('started',true);
+                            console.log('wtf');
                             this.setState({
-                                data : homeData
-                            })
+                                data : homeData,
+                                err : true,
+                                errMessage : err.message,
+                                loading : false
+                            });
                         }
                         else{
+                            console.log('err2');
                             this.setState({ loading: false, err: true, errMessage: err })
                         }
                     });
