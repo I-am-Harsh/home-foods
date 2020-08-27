@@ -13,10 +13,25 @@ html,body, #root, .App, .main{
   color: aliceblue;
 }
 
+.error {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  padding-top: 80px;
+  left : 0px;
+}
+
 #heading{
   font-weight: bolder;
 }
 
+h3,h2{
+  font-weight: bolder;
+}
+
+h4{
+  font-weight: bold;
+}
 
 .home-content {
   text-align: center;
@@ -50,6 +65,8 @@ html,body, #root, .App, .main{
   flex-direction: column;
   /* justify-content: center; */
 }
+
+
 
 .nav-link{
   color : white

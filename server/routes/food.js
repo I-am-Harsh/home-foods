@@ -10,10 +10,12 @@ const getMethod = (data) => {
     const methodArray = [];
     for(let i = 0; i < item.length; i++){
         const methodIns =  item[i].split(',').map(item => item.trim());
+        
         const methodInsObj = {
-            name : methodIns[0],
+            name : methodIns[0].substring(1,methodIns[0].length - 1),
             instruction : []
         }
+
         for(let j = 1; j < methodIns.length; j++){
             methodInsObj['instruction'].push(methodIns[j])
         }

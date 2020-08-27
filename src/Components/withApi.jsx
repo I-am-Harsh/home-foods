@@ -10,28 +10,56 @@ const WithApi = (OriginalComponent) => {
         constructor(props) {
             super(props);
             this.state = {
-                data: '',
+                data : '',
                 loading: true,
                 err: false,
                 errMessage: ''
             }
         }
+
         
         // 9 recipe for homescreen
         getHomeData = () => {
-            axios.get(`${apiUrl}/food`)
-                .then(response => {
-                    const { success, result } = response.data;
-                    if (success === true) {
-                        this.setState({
-                            data: result,
-                            loading: false
-                        })
-                        const cookie = new Cookies();
-                        cookie.set('homeData',result);
-                    }
-                })
-                .catch(err => this.setState({ loading: false, err: true, errMessage: err }));
+            // session storage;
+            const session = sessionStorage.getItem('started');
+            console.log(session);
+            if(session){
+                const homeData = JSON.parse(localStorage.getItem('homeData'));
+                if(homeData){
+                    this.setState({
+                        data : homeData,
+                        loading : false
+                    })       
+                }
+            }
+            else{
+                axios.get(`${apiUrl}/food`)
+                    .then(response => {
+                        const { success, result } = response.data;
+                        if (success === true) {
+                            const cookie = new Cookies();
+                            localStorage.setItem('homeData',JSON.stringify(result));
+                            sessionStorage.setItem('started',true);
+                            this.setState({
+                                data: result,
+                                loading: false
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        const homeData = localStorage.getItem('homeData');
+                        console.log(homeData);
+                        if(homeData){
+                            sessionStorage.setItem('started',true);
+                            this.setState({
+                                data : homeData
+                            })
+                        }
+                        else{
+                            this.setState({ loading: false, err: true, errMessage: err })
+                        }
+                    });
+            }
         }
 
         // all recipes
@@ -51,8 +79,8 @@ const WithApi = (OriginalComponent) => {
 
         // get specific dish
 
-        getSpecificDish = async (name) => {
-            await axios.get(`${apiUrl}/food/${name}`)
+        getSpecificDish = (name) => {
+            axios.get(`${apiUrl}/food/${name}`)
                 .then(response => {
                     const { success, result } = response.data;
                     if (success === true) {

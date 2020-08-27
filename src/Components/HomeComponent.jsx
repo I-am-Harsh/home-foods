@@ -22,6 +22,7 @@ class Home extends Component {
 
 
     componentDidMount() {
+
         if(this.props.parallaxText !== 'Order. Cook.'){
             this.props.changeParallaxText('Order. Cook.',100);
         }
@@ -90,7 +91,7 @@ class Home extends Component {
 
     handleDishClick = (dish) => {
         const cookie = new Cookies();
-        cookie.set('dish',dish);
+        cookie.set(dish.url,dish);
         this.props.history.push(`/recipes/${dish.url}`);
     }
 
@@ -160,14 +161,13 @@ class Home extends Component {
     }
 
     render() {
-        const { loading, err, errMessage } = this.state;
-
+        const { loading, err, errMessage } = this.props;
         if (err) {
             return (
-                <Alert color="danger" style={{ paddingTop: 80 }} >
+                <Alert color="danger"className = 'error'>
                     Something went wrong please Refresh the page
                     <br />
-                    Error : {errMessage}
+                    Error : {errMessage.message}
                 </Alert>
             )
         }
