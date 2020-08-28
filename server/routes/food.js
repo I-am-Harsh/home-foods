@@ -36,7 +36,7 @@ router
 // initial fetch
 // only 9
 .get('/', (req, res) => {
-    Recipe.find({}).sort({_id : -1}).limit(9)
+    Recipe.find({}).sort({_id : -1}).limit(3)
     .then((result) => {
         res.json({success : true, result : result})
     })
@@ -44,10 +44,19 @@ router
 })
 
 // all
-.get('/recipes', (req, res) => {
-    Recipe.find({}).sort({_id : -1})
+.get('/recipes/:skip', (req, res) => {
+    Recipe.find({})
+    .sort({_id : -1})
+    .skip(parseInt(req.params.skip))
+    .limit(3)
     .then((result) => {
-        res.json({success : true, result : result})
+        console.log(result);
+        if(result){
+            res.json({success : true, result : result})
+        }
+        else{
+            res.json({success : true, result : false});
+        }
     })
     .catch(err => res.json({success : false, result : err}));
 })
