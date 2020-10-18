@@ -1,5 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Features
+* Front End designed to view recipes with procedure using MERN.
+* CRUD operations using backend only.
+* Responsive Design
+
+## How to use - 
+1. Clone the repo
+2. Run ```npm install```
+3. Run ```npm start && cd server && npm install```
+4. Add dishes to the mongodb backend using postman or directly using mongo shell
+5. for reference of db model, check under ./server/models
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
